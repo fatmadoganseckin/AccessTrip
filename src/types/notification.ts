@@ -14,6 +14,25 @@ export interface NotificationItem {
   isRead: boolean;
   actionUrl?: string;
   locationName?: string;
-  severity?: 'info' | 'warning' | 'urgent';
+  severity?: 'info' | 'warning' | 'urgent' | 'critical';
   provider: 'google' | 'email' | 'neon';
+}
+
+export interface AccessibilityDisruptionAlert {
+  id: string;
+  destinationId?: string;
+  type?: string;
+  title: string;
+  locationName: string;
+  description?: string;
+  message?: string;
+  severity: 'info' | 'warning' | 'urgent' | 'critical';
+  timestamp: string;
+  isRead?: boolean;
+  affectsWheelchair?: boolean;
+  affectsLowVision?: boolean;
+  affectsHearing?: boolean;
+  reportedByCount?: number;
+  verificationStatus?: 'verified' | 'unverified';
+  affectedCoordinates?: { lat: number; lng: number };
 }
