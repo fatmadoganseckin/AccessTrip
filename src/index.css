@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-size: 16px;
+  }
+
+  *:focus-visible {
+    outline: 4px solid #f59e0b !important;
+    outline-offset: 2px !important;
+  }
+}
+
+/* Dyslexia Font Class */
+.font-dyslexia {
+  font-family: 'OpenDyslexic', 'Comic Sans MS', sans-serif !important;
+}
+
+/* Reduced Motion Class */
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* High Contrast Modes */
+.contrast-light {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+.contrast-light * {
+  border-color: #000000 !important;
+}
+
+.contrast-dark {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+.contrast-dark * {
+  border-color: #ffffff !important;
+}
+
+.yellow-on-black {
+  background-color: #000000 !important;
+  color: #facc15 !important;
+}
+
+.yellow-on-black * {
+  border-color: #facc15 !important;
+  color: #facc15 !important;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
