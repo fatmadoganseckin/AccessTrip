@@ -6,14 +6,18 @@ import { SkipLink } from './components/common/SkipLink';
 import { Header } from './components/common/Header';
 import { Footer } from './components/common/Footer';
 import { AccessibilityToolbar } from './components/common/AccessibilityToolbar';
+import { MobileBottomNav } from './components/common/MobileBottomNav';
 import { AuthModal } from './components/auth/AuthModal';
 import { ProfileOnboardingModal } from './components/profile/ProfileOnboardingModal';
 
 // Landing sub-components
 import { Hero } from './components/landing/Hero';
+import { PopularDestinations } from './components/landing/PopularDestinations';
+import { VerifiedStaysGrid } from './components/landing/VerifiedStaysGrid';
+import { TrustFeaturesBar } from './components/landing/TrustFeaturesBar';
+import { CommunityStories } from './components/landing/CommunityStories';
 import { InteractiveWorldMap } from './components/landing/InteractiveWorldMap';
 import { FeatureGrid } from './components/landing/FeatureGrid';
-import { Testimonials } from './components/landing/Testimonials';
 import { Pricing } from './components/landing/Pricing';
 import { FAQ } from './components/landing/FAQ';
 
@@ -37,10 +41,13 @@ const MainContent: React.FC = () => {
       <main id="main-content" className="flex-1 focus:outline-none" tabIndex={-1}>
         {activeTab === 'landing' && (
           <>
-            <Hero />
+            <Hero onOpenProfile={() => setIsProfileOpen(true)} />
+            <PopularDestinations />
+            <VerifiedStaysGrid />
+            <TrustFeaturesBar />
+            <CommunityStories />
             <InteractiveWorldMap />
             <FeatureGrid />
-            <Testimonials />
             <Pricing />
             <FAQ />
           </>
@@ -56,6 +63,7 @@ const MainContent: React.FC = () => {
 
       <Footer />
       <AccessibilityToolbar />
+      <MobileBottomNav onOpenProfile={() => setIsProfileOpen(true)} />
       <AuthModal />
       <ProfileOnboardingModal isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} />
     </div>
