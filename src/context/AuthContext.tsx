@@ -1,88 +1,84 @@
-import React, { createContext, useContext, useState } from 'react';
-import { User } from '../types/notification';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { Organization, OrgRole, PermissionKey } from '../types/organization';
+import { SEEDED_ORGANIZATIONS, SEEDED_MEMBERS } from '../services/mockDataSeeder';
+
+interface UserProfile {
+  id: string;
+  email: string;
+  name: string;
+  avatarUrl: string;
+}
 
 interface AuthContextType {
-  user: User | null;
-  isAuthenticated: boolean;
-  loginWithGoogle: () => Promise<void>;
-  loginWithEmail: (email: string) => Promise<void>;
-  loginWithSupabase: () => Promise<void>;
+  user: UserProfile | null;
+  activeOrg: Organization;
+  activeRole: OrgRole;
+  userOrgs: Organization[];
+  setActiveOrg: (org: Organization) => void;
+  hasPermission: (permission: PermissionKey) => boolean;
+  login: (email: string) => void;
   logout: () => void;
   isAuthModalOpen: boolean;
   openAuthModal: () => void;
   closeAuthModal: () => void;
 }
 
-const DEFAULT_USER: User = {
-  id: 'usr-101',
-  email: 'alex.rivera@accesstrip.org',
-  name: 'Alex Rivera',
-  avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
-  provider: 'google',
-};
-
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(() => {
-    const saved = localStorage.getItem('accesstrip_user_auth');
-    return saved ? JSON.parse(saved) : DEFAULT_USER;
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<UserProfile | null>({
+    id: 'usr-sarah-jenkins',
+    email: 'sarah.j@spinal.co.uk',
+    name: 'Sarah Jenkins',
+    avatarUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80',
   });
 
+  const [activeOrg, setActiveOrgState] = useState<Organization>(SEEDED_ORGANIZATIONS[0]);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
-  const loginWithGoogle = async () => {
-    const newUser: User = {
-      id: `usr-g-${Date.now()}`,
-      email: 'traveler.google@gmail.com',
-      name: 'Taylor Morgan',
-      avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
-      provider: 'google',
-    };
-    setUser(newUser);
-    localStorage.setItem('accesstrip_user_auth', JSON.stringify(newUser));
-    setIsAuthModalOpen(false);
+  const userOrgs = SEEDED_ORGANIZATIONS;
+
+  const activeMember = SEEDED_MEMBERS.find(m => m.organizationId === activeOrg.id) || SEEDED_MEMBERS[0];
+  const activeRole: OrgRole = activeMember.role;
+
+  const hasPermission = (permission: PermissionKey): boolean => {
+    if (activeRole === 'owner' || activeRole === 'administrator') return true;
+    if (activeRole === 'finance_manager' && permission.startsWith('funding')) return true;
+    if (activeRole === 'case_manager' && (permission.startsWith('cases') || permission.startsWith('travellers'))) return true;
+    if (activeRole === 'travel_coordinator' && (permission.startsWith('cases') || permission.startsWith('travellers') || permission.startsWith('accessibility'))) return true;
+    if (activeRole === 'accessibility_specialist' && permission.startsWith('accessibility')) return true;
+    if (activeRole === 'volunteer' && permission === 'cases.read') return true;
+    return false;
   };
 
-  const loginWithEmail = async (email: string) => {
-    const newUser: User = {
-      id: `usr-e-${Date.now()}`,
-      email: email,
+  const setActiveOrg = (org: Organization) => {
+    setActiveOrgState(org);
+  };
+
+  const login = (email: string) => {
+    setUser({
+      id: 'usr-demo',
+      email,
       name: email.split('@')[0],
-      avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80',
-      provider: 'email',
-    };
-    setUser(newUser);
-    localStorage.setItem('accesstrip_user_auth', JSON.stringify(newUser));
-    setIsAuthModalOpen(false);
-  };
-
-  const loginWithSupabase = async () => {
-    const newUser: User = {
-      id: `usr-sb-${Date.now()}`,
-      email: 'verified.traveler@supabase.io',
-      name: 'Jordan Smith',
-      avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
-      provider: 'supabase',
-    };
-    setUser(newUser);
-    localStorage.setItem('accesstrip_user_auth', JSON.stringify(newUser));
+      avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+    });
     setIsAuthModalOpen(false);
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('accesstrip_user_auth');
   };
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        isAuthenticated: !!user,
-        loginWithGoogle,
-        loginWithEmail,
-        loginWithSupabase,
+        activeOrg,
+        activeRole,
+        userOrgs,
+        setActiveOrg,
+        hasPermission,
+        login,
         logout,
         isAuthModalOpen,
         openAuthModal: () => setIsAuthModalOpen(true),
@@ -96,8 +92,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within AuthProvider');
-  }
+  if (!context) throw new Error('useAuth must be used within AuthProvider');
   return context;
 };
