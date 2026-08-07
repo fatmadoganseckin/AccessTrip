@@ -1,0 +1,184 @@
+import React, { useState } from 'react';
+import { Compass, Search, MapPin, ShieldCheck, Bus, Sun, ShieldAlert, ArrowRight, Layers } from 'lucide-react';
+import { useTrip } from '../../context/TripContext';
+import { Destination } from '../../types/destination';
+import { DestinationDetailModal } from '../explorer/DestinationDetailModal';
+import { InteractiveMapView } from '../map/InteractiveMapView';
+
+export const DestinationsPage: React.FC = () => {
+  const { destinations, setActiveDestination } = useTrip();
+  const [selectedDest, setSelectedDest] = useState<Destination | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activeLayer, setActiveLayer] = useState<'all' | 'metro' | 'beaches' | 'toilets' | 'hospitals'>('all');
+
+  const extraDestinations = [
+    ...destinations,
+    {
+      id: 'vancouver-canada',
+      name: 'Vancouver',
+      country: 'Canada',
+      region: 'North America',
+      tagline: 'Nature and city with accessibility in mind',
+      description: 'Vancouver features ocean boardwalks, barrier-free Stanley Park trails, and 100% accessible SkyTrain transit.',
+      heroImage: 'https://images.unsplash.com/photo-1559511260-66a654ae982a?auto=format&fit=crop&w=600&q=80',
+      galleryImages: [],
+      coordinates: { lat: 49.2827, lng: -123.1207 },
+      scores: { overall: 93, transportation: 95, accommodation: 92, restaurant: 90, attraction: 94, medicalSupport: 96, sidewalkQuality: 93, elevatorAvailability: 95, restroomAvailability: 92 },
+      features: { serviceAnimalFriendly: true, quietAreasAvailable: true, brailleSignage: true, audioGuidesAvailable: true, tactilePaving: true, chargingStationsCount: 12 },
+      climate: 'Oceanic' as const,
+      budget: '$$$' as const,
+      walkingDifficulty: 'Easy (Flat)' as const,
+      crowdLevel: 'Moderate' as const,
+      safetyRating: 4.9,
+      weather: { tempC: 20, condition: 'Clear', humidity: 55 },
+      airQualityIndex: { score: 1, label: 'Pristine' },
+      crowdPredictionToday: [],
+      emergencyContacts: { medical: '911', police: '911', accessibleTaxi: '+1 600-TAXIS', embassy: '+1 600-EMBASSY' },
+      nearbyHospitals: [],
+      mapPoints: [],
+      matchedPreferences: [],
+      verifiedStatus: true,
+      lastUpdated: 'August 2026',
+      aiSummary: 'Vancouver is an outdoor accessible paradise.'
+    }
+  ];
+
+  const filtered = extraDestinations.filter(d => {
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      return d.name.toLowerCase().includes(q) || d.country.toLowerCase().includes(q);
+    }
+    return true;
+  });
+
+  return (
+    <>
+      <div className="space-y-8 pb-12">
+        
+        {/* Contextual Page Header */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
+              Destinations — Explore accessible cities around the world
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
+              Spatial accessibility guides, step-free public transit ratings, and medical emergency hubs.
+            </p>
+          </div>
+
+          <div className="w-full sm:w-72 relative">
+            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+            <input
+              type="text"
+              placeholder="Search city or country..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold focus:outline-none"
+            />
+          </div>
+        </div>
+
+        {/* Destination Cards Grid (Google Travel / Lonely Planet Style) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filtered.map((dest) => (
+            <div
+              key={dest.id}
+              onClick={() => setSelectedDest(dest)}
+              className="group cursor-pointer bg-white dark:bg-slate-900 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-2xl transition-all duration-300 flex flex-col justify-between"
+            >
+              <div className="space-y-3">
+                <div className="relative h-56 overflow-hidden">
+                  <img
+                    src={dest.heroImage}
+                    alt={dest.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+
+                  <div className="absolute top-3 right-3 px-3 py-1 bg-emerald-600 text-white font-extrabold text-xs rounded-xl shadow-lg flex items-center space-x-1">
+                    <ShieldCheck className="w-3.5 h-3.5" />
+                    <span>{dest.scores.overall} Accessibility Score</span>
+                  </div>
+
+                  <div className="absolute bottom-3 left-3 right-3 text-white drop-shadow-md">
+                    <h3 className="text-2xl font-black">{dest.name}, {dest.country}</h3>
+                  </div>
+                </div>
+
+                <div className="p-5 space-y-3">
+                  <p className="text-xs text-slate-600 dark:text-slate-300 font-medium line-clamp-2 leading-relaxed">
+                    {dest.description}
+                  </p>
+
+                  {/* Highlights Grid */}
+                  <div className="grid grid-cols-2 gap-2 text-[11px] font-bold text-slate-500 pt-2 border-t border-slate-100 dark:border-slate-800">
+                    <div className="flex items-center space-x-1.5">
+                      <Bus className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>{dest.scores.transportation}% Transit Score</span>
+                    </div>
+                    <div className="flex items-center space-x-1.5">
+                      <Sun className="w-3.5 h-3.5 text-amber-500" />
+                      <span>{dest.weather.tempC}°C • {dest.weather.condition}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-5 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-extrabold text-emerald-600 dark:text-emerald-400">
+                <span>Best Season: May–Sept</span>
+                <span className="flex items-center group-hover:translate-x-1 transition-transform">
+                  Open Destination Guide <ArrowRight className="w-3.5 h-3.5 ml-1" />
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Central Spatial Map Experience */}
+        <div className="p-6 bg-slate-900 rounded-3xl border border-slate-800 text-white space-y-4 shadow-2xl">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+            <div>
+              <h2 className="text-lg font-black flex items-center">
+                <Compass className="w-5 h-5 text-emerald-400 mr-2" /> Spatial Accessibility Map & Layers
+              </h2>
+              <p className="text-xs text-slate-400 font-medium mt-0.5">
+                Toggle accessible transit lines, wheelchair restrooms, emergency ER hospitals, and charging stations.
+              </p>
+            </div>
+
+            {/* Layer Toggles */}
+            <div className="flex flex-wrap gap-1.5">
+              <button
+                onClick={() => setActiveLayer('all')}
+                className={`px-3 py-1 rounded-lg text-xs font-extrabold ${activeLayer === 'all' ? 'bg-emerald-600 text-white' : 'bg-slate-800 text-slate-400'}`}
+              >
+                All Layers
+              </button>
+              <button
+                onClick={() => setActiveLayer('metro')}
+                className={`px-3 py-1 rounded-lg text-xs font-extrabold ${activeLayer === 'metro' ? 'bg-emerald-600 text-white' : 'bg-slate-800 text-slate-400'}`}
+              >
+                Accessible Metro
+              </button>
+              <button
+                onClick={() => setActiveLayer('toilets')}
+                className={`px-3 py-1 rounded-lg text-xs font-extrabold ${activeLayer === 'toilets' ? 'bg-emerald-600 text-white' : 'bg-slate-800 text-slate-400'}`}
+              >
+                Accessible Restrooms
+              </button>
+            </div>
+          </div>
+
+          <div className="h-96 rounded-2xl overflow-hidden border border-slate-800">
+            <InteractiveMapView />
+          </div>
+        </div>
+
+      </div>
+
+      <DestinationDetailModal
+        destination={selectedDest}
+        onClose={() => setSelectedDest(null)}
+      />
+    </>
+  );
+};

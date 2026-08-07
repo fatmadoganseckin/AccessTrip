@@ -7,9 +7,15 @@ import { TripProvider } from './context/TripContext';
 // Connected Public Marketing Website
 import { PublicMarketingSite } from './components/marketing/PublicMarketingSite';
 
-// Desktop SaaS App Shell & Operational Views
+// Desktop Application Shell & Core Workspaces
 import { DesktopSaaSLayout } from './components/shell/DesktopSaaSLayout';
 import { OverviewDashboard } from './components/app/OverviewDashboard';
+import { StaysMarketplacePage } from './components/stays/StaysMarketplacePage';
+import { DestinationsPage } from './components/destinations/DestinationsPage';
+import { AIPlannerWorkspace } from './components/ai/AIPlannerWorkspace';
+import { AccessibilityReportsPage } from './components/reports/AccessibilityReportsPage';
+
+// Secondary Enterprise Workspaces
 import { TravellersManager } from './components/app/TravellersManager';
 import { CaseManager } from './components/app/CaseManager';
 import { CaseDetailView } from './components/app/CaseDetailView';
@@ -17,14 +23,7 @@ import { FundingManager } from './components/app/FundingManager';
 import { DocumentManager } from './components/app/DocumentManager';
 import { TeamManager } from './components/app/TeamManager';
 import { OrgSettingsView } from './components/app/OrgSettingsView';
-
-// Travel Module Canvas components
-import { DestinationExplorerPage } from './components/explorer/DestinationExplorerPage';
-import { AIAssistantDrawer } from './components/ai/AIAssistantDrawer';
-import { InteractiveMapView } from './components/map/InteractiveMapView';
-import { DragDropItineraryPlanner } from './components/planner/DragDropItineraryPlanner';
-import { AccessibilityMetricsDashboard } from './components/dashboard/AccessibilityMetricsDashboard';
-import { CommunityReviewList } from './components/reviews/CommunityReviewList';
+import { ConsumerDashboard } from './components/b2c/ConsumerDashboard';
 
 const MainAppContent: React.FC = () => {
   const { activeView } = useApp();
@@ -36,18 +35,21 @@ const MainAppContent: React.FC = () => {
   return (
     <DesktopSaaSLayout>
       {activeView === 'overview' && <OverviewDashboard />}
-      {activeView === 'travellers' && <TravellersManager />}
+      {activeView === 'stays' && <StaysMarketplacePage />}
+      {activeView === 'destinations' && <DestinationsPage />}
+      {activeView === 'ai_planner' && <AIPlannerWorkspace />}
+      {activeView === 'trips' && <ConsumerDashboard />}
+      {activeView === 'saved' && <ConsumerDashboard />}
+      {activeView === 'reports' && <AccessibilityReportsPage />}
+      {activeView === 'settings' && <OrgSettingsView />}
+
+      {/* Secondary Enterprise Organization Workspaces */}
       {activeView === 'cases' && <CaseManager />}
       {activeView === 'case_detail' && <CaseDetailView />}
-      {activeView === 'stays' && <DestinationExplorerPage />}
-      {activeView === 'destinations' && <DestinationExplorerPage />}
-      {activeView === 'map' && <InteractiveMapView />}
-      {activeView === 'requests' && <OverviewDashboard />}
+      {activeView === 'travellers' && <TravellersManager />}
       {activeView === 'funding' && <FundingManager />}
       {activeView === 'documents' && <DocumentManager />}
-      {activeView === 'reports' && <AccessibilityMetricsDashboard />}
       {activeView === 'team' && <TeamManager />}
-      {activeView === 'settings' && <OrgSettingsView />}
     </DesktopSaaSLayout>
   );
 };

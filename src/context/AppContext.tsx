@@ -1,23 +1,24 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { SupportCase } from '../types/case';
 import { SEEDED_CASES } from '../services/mockDataSeeder';
 
 export type SaaSView =
   | 'public_landing'
   | 'overview'
+  | 'stays'
+  | 'destinations'
+  | 'ai_planner'
+  | 'trips'
+  | 'saved'
+  | 'reports'
+  | 'settings'
   | 'travellers'
   | 'cases'
   | 'case_detail'
-  | 'stays'
-  | 'destinations'
-  | 'map'
   | 'requests'
-  | 'bookings'
   | 'funding'
   | 'documents'
-  | 'reports'
-  | 'team'
-  | 'settings';
+  | 'team';
 
 export type EnvironmentMode = 'mock' | 'sandbox' | 'production';
 
@@ -37,11 +38,29 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [activeView, setActiveView] = useState<SaaSView>('overview');
+  const [activeView, setActiveView] = useState<SaaSView>('stays');
   const [envMode, setEnvMode] = useState<EnvironmentMode>('mock');
   const [activeCase, setActiveCase] = useState<SupportCase | null>(SEEDED_CASES[0]);
   const [globalSearchQuery, setGlobalSearchQuery] = useState('');
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+
+  // Keyboard Shortcuts (Ctrl+K = search, S = Stays, D = Destinations, A = AI Planner)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        const searchInput = document.querySelector('input[placeholder*="Search"]') as HTMLInputElement;
+        if (searchInput) searchInput.focus();
+      }
+      if (document.activeElement?.tagName !== 'INPUT' && document.activeElement?.tagName !== 'TEXTAREA') {
+        if (e.key.toLowerCase() === 's') setActiveView('stays');
+        if (e.key.toLowerCase() === 'd') setActiveView('destinations');
+        if (e.key.toLowerCase() === 'a') setActiveView('ai_planner');
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   return (
     <AppContext.Provider
