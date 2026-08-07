@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Compass, Search, MapPin, ShieldCheck, Bus, Sun, ShieldAlert, ArrowRight, Layers } from 'lucide-react';
+import { Compass, Search, ShieldCheck, Bus, Sun, ArrowRight } from 'lucide-react';
 import { useTrip } from '../../context/TripContext';
 import { Destination } from '../../types/destination';
 import { DestinationDetailModal } from '../explorer/DestinationDetailModal';
@@ -9,7 +9,6 @@ export const DestinationsPage: React.FC = () => {
   const { destinations, setActiveDestination } = useTrip();
   const [selectedDest, setSelectedDest] = useState<Destination | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeLayer, setActiveLayer] = useState<'all' | 'metro' | 'beaches' | 'toilets' | 'hospitals'>('all');
 
   const extraDestinations = [
     ...destinations,
@@ -53,122 +52,104 @@ export const DestinationsPage: React.FC = () => {
 
   return (
     <>
-      <div className="space-y-8 pb-12">
+      <div className="space-y-6 pb-12 max-w-[1440px] mx-auto">
         
-        {/* Contextual Page Header */}
+        {/* Contextual Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
               Destinations — Explore accessible cities around the world
             </h1>
-            <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
+            <p className="text-xs text-slate-500 font-medium mt-0.5">
               Spatial accessibility guides, step-free public transit ratings, and medical emergency hubs.
             </p>
           </div>
 
-          <div className="w-full sm:w-72 relative">
-            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+          <div className="w-full sm:w-64 relative">
+            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
               type="text"
-              placeholder="Search city or country..."
+              placeholder="Search city..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold focus:outline-none"
+              className="w-full pl-9 pr-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold focus:outline-none"
             />
           </div>
         </div>
 
-        {/* Destination Cards Grid (Google Travel / Lonely Planet Style) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* 3-4 Column Desktop Destination Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {filtered.map((dest) => (
             <div
               key={dest.id}
               onClick={() => setSelectedDest(dest)}
-              className="group cursor-pointer bg-white dark:bg-slate-900 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-2xl transition-all duration-300 flex flex-col justify-between"
+              className="group cursor-pointer bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
             >
-              <div className="space-y-3">
-                <div className="relative h-56 overflow-hidden">
+              <div className="space-y-2.5">
+                
+                {/* Image */}
+                <div className="relative h-44 overflow-hidden">
                   <img
                     src={dest.heroImage}
                     alt={dest.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
 
-                  <div className="absolute top-3 right-3 px-3 py-1 bg-emerald-600 text-white font-extrabold text-xs rounded-xl shadow-lg flex items-center space-x-1">
-                    <ShieldCheck className="w-3.5 h-3.5" />
-                    <span>{dest.scores.overall} Accessibility Score</span>
+                  <div className="absolute top-2.5 right-2.5 px-2.5 py-0.5 bg-emerald-600 text-white font-bold text-[10px] rounded shadow flex items-center space-x-1">
+                    <ShieldCheck className="w-3 h-3" />
+                    <span>{dest.scores.overall} Score</span>
                   </div>
 
-                  <div className="absolute bottom-3 left-3 right-3 text-white drop-shadow-md">
-                    <h3 className="text-2xl font-black">{dest.name}, {dest.country}</h3>
+                  <div className="absolute bottom-2.5 left-2.5 text-white drop-shadow-md">
+                    <h3 className="text-lg font-bold">{dest.name}, {dest.country}</h3>
                   </div>
                 </div>
 
-                <div className="p-5 space-y-3">
-                  <p className="text-xs text-slate-600 dark:text-slate-300 font-medium line-clamp-2 leading-relaxed">
+                {/* Body */}
+                <div className="px-3.5 space-y-2">
+                  <p className="text-xs text-slate-600 dark:text-slate-300 font-medium line-clamp-2 leading-snug">
                     {dest.description}
                   </p>
 
-                  {/* Highlights Grid */}
-                  <div className="grid grid-cols-2 gap-2 text-[11px] font-bold text-slate-500 pt-2 border-t border-slate-100 dark:border-slate-800">
-                    <div className="flex items-center space-x-1.5">
-                      <Bus className="w-3.5 h-3.5 text-emerald-600" />
-                      <span>{dest.scores.transportation}% Transit Score</span>
+                  <div className="grid grid-cols-2 gap-1.5 text-[10px] font-semibold text-slate-500 pt-1.5 border-t border-slate-100 dark:border-slate-800">
+                    <div className="flex items-center space-x-1">
+                      <Bus className="w-3 h-3 text-emerald-600" />
+                      <span>{dest.scores.transportation}% Transit</span>
                     </div>
-                    <div className="flex items-center space-x-1.5">
-                      <Sun className="w-3.5 h-3.5 text-amber-500" />
+                    <div className="flex items-center space-x-1">
+                      <Sun className="w-3 h-3 text-amber-500" />
                       <span>{dest.weather.tempC}°C • {dest.weather.condition}</span>
                     </div>
                   </div>
                 </div>
+
               </div>
 
-              <div className="p-5 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-extrabold text-emerald-600 dark:text-emerald-400">
-                <span>Best Season: May–Sept</span>
-                <span className="flex items-center group-hover:translate-x-1 transition-transform">
-                  Open Destination Guide <ArrowRight className="w-3.5 h-3.5 ml-1" />
+              {/* Action Footer */}
+              <div className="p-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-emerald-600 dark:text-emerald-400 mt-2">
+                <span>Best: May–Sept</span>
+                <span className="flex items-center group-hover:translate-x-0.5 transition-transform">
+                  Explore <ArrowRight className="w-3 h-3 ml-1" />
                 </span>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Central Spatial Map Experience */}
-        <div className="p-6 bg-slate-900 rounded-3xl border border-slate-800 text-white space-y-4 shadow-2xl">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+        {/* Central Map Canvas */}
+        <div className="p-4 bg-slate-900 rounded-2xl border border-slate-800 text-white space-y-3 shadow-sm">
+          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
             <div>
-              <h2 className="text-lg font-black flex items-center">
-                <Compass className="w-5 h-5 text-emerald-400 mr-2" /> Spatial Accessibility Map & Layers
+              <h2 className="text-sm font-bold flex items-center">
+                <Compass className="w-4 h-4 text-emerald-400 mr-1.5" /> Spatial Accessibility Map
               </h2>
-              <p className="text-xs text-slate-400 font-medium mt-0.5">
-                Toggle accessible transit lines, wheelchair restrooms, emergency ER hospitals, and charging stations.
+              <p className="text-xs text-slate-400 font-medium">
+                Step-free transit lines, wheelchair restrooms, and medical emergency ERs.
               </p>
-            </div>
-
-            {/* Layer Toggles */}
-            <div className="flex flex-wrap gap-1.5">
-              <button
-                onClick={() => setActiveLayer('all')}
-                className={`px-3 py-1 rounded-lg text-xs font-extrabold ${activeLayer === 'all' ? 'bg-emerald-600 text-white' : 'bg-slate-800 text-slate-400'}`}
-              >
-                All Layers
-              </button>
-              <button
-                onClick={() => setActiveLayer('metro')}
-                className={`px-3 py-1 rounded-lg text-xs font-extrabold ${activeLayer === 'metro' ? 'bg-emerald-600 text-white' : 'bg-slate-800 text-slate-400'}`}
-              >
-                Accessible Metro
-              </button>
-              <button
-                onClick={() => setActiveLayer('toilets')}
-                className={`px-3 py-1 rounded-lg text-xs font-extrabold ${activeLayer === 'toilets' ? 'bg-emerald-600 text-white' : 'bg-slate-800 text-slate-400'}`}
-              >
-                Accessible Restrooms
-              </button>
             </div>
           </div>
 
-          <div className="h-96 rounded-2xl overflow-hidden border border-slate-800">
+          <div className="h-80 rounded-xl overflow-hidden border border-slate-800">
             <InteractiveMapView />
           </div>
         </div>
