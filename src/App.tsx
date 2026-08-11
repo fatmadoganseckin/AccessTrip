@@ -13,6 +13,8 @@ import { OverviewDashboard } from './components/app/OverviewDashboard';
 import { StaysMarketplacePage } from './components/stays/StaysMarketplacePage';
 import { DestinationsPage } from './components/destinations/DestinationsPage';
 import { AIPlannerWorkspace } from './components/ai/AIPlannerWorkspace';
+import { TripsJourneyManager } from './components/trips/TripsJourneyManager';
+import { SavedCollectionsPage } from './components/saved/SavedCollectionsPage';
 import { AccessibilityReportsPage } from './components/reports/AccessibilityReportsPage';
 
 // Secondary Enterprise Workspaces
@@ -23,7 +25,6 @@ import { FundingManager } from './components/app/FundingManager';
 import { DocumentManager } from './components/app/DocumentManager';
 import { TeamManager } from './components/app/TeamManager';
 import { OrgSettingsView } from './components/app/OrgSettingsView';
-import { ConsumerDashboard } from './components/b2c/ConsumerDashboard';
 
 const MainAppContent: React.FC = () => {
   const { activeView } = useApp();
@@ -38,8 +39,8 @@ const MainAppContent: React.FC = () => {
       {activeView === 'stays' && <StaysMarketplacePage />}
       {activeView === 'destinations' && <DestinationsPage />}
       {activeView === 'ai_planner' && <AIPlannerWorkspace />}
-      {activeView === 'trips' && <ConsumerDashboard />}
-      {activeView === 'saved' && <ConsumerDashboard />}
+      {activeView === 'trips' && <TripsJourneyManager />}
+      {activeView === 'saved' && <SavedCollectionsPage />}
       {activeView === 'reports' && <AccessibilityReportsPage />}
       {activeView === 'settings' && <OrgSettingsView />}
 
