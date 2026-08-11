@@ -53,16 +53,16 @@ export const DestinationsPage: React.FC = () => {
 
   return (
     <>
-      <div className="space-y-6 pb-12 max-w-[1440px] mx-auto">
+      <div className="space-y-8 pb-12 max-w-[1440px] mx-auto">
         
-        {/* Contextual Header */}
+        {/* Contextual Page Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
-              Destinations — Explore accessible cities around the world
+              Destinations — Accessible Travel Guides
             </h1>
             <p className="text-xs text-slate-500 font-medium mt-0.5">
-              Spatial accessibility guides, step-free public transit ratings, and medical emergency hubs.
+              Spatial accessibility infrastructure, step-free transit, and verified places worldwide.
             </p>
           </div>
 
@@ -70,40 +70,38 @@ export const DestinationsPage: React.FC = () => {
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
               type="text"
-              placeholder="Search city..."
+              placeholder="Search destination city..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold focus:outline-none"
+              className="w-full pl-9 pr-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500"
             />
           </div>
         </div>
 
-        {/* 4 Column Desktop Destination Grid (WCAG 2.2 AA compliant, 100% text on solid background) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {filtered.map((dest) => (
-            <DestinationCard
-              key={dest.id}
-              destination={dest}
-              onSelect={(d) => setSelectedDest(d)}
-            />
-          ))}
+        {/* 1. Spatial Accessibility Map (First Focus: Immediately Visible Map Component) */}
+        <div className="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
+          <InteractiveMapView />
         </div>
 
-        {/* Central Map Canvas */}
-        <div className="p-4 bg-slate-900 rounded-2xl border border-slate-800 text-white space-y-3 shadow-sm">
-          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-            <div>
-              <h2 className="text-sm font-bold flex items-center">
-                <Compass className="w-4 h-4 text-emerald-400 mr-1.5" /> Spatial Accessibility Map
-              </h2>
-              <p className="text-xs text-slate-400 font-medium">
-                Step-free transit lines, wheelchair restrooms, and medical emergency ERs.
-              </p>
-            </div>
+        {/* 2. Destination Cards Grid (Compact 35% height reduction, 4 columns on desktop) */}
+        <div className="space-y-4 pt-4 border-t border-slate-200/80 dark:border-slate-800/80">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 tracking-tight">
+              Top Audited Accessible Destinations
+            </h2>
+            <span className="text-xs font-semibold text-slate-500">
+              Showing {filtered.length} cities
+            </span>
           </div>
 
-          <div className="h-80 rounded-xl overflow-hidden border border-slate-800">
-            <InteractiveMapView />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {filtered.map((dest) => (
+              <DestinationCard
+                key={dest.id}
+                destination={dest}
+                onSelect={(d) => setSelectedDest(d)}
+              />
+            ))}
           </div>
         </div>
 
