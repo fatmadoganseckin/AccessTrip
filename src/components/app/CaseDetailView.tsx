@@ -3,6 +3,7 @@ import { ArrowLeft, CheckCircle2, Clock, Mail, Calendar, Coins, Plus, FileText, 
 import { useApp } from '../../context/AppContext';
 import { SEEDED_ENQUIRIES, SEEDED_DOCUMENTS } from '../../services/mockDataSeeder';
 import { HotelEnquiryModal } from './HotelEnquiryModal';
+import { SafeImage } from '../common/SafeImage';
 
 export const CaseDetailView: React.FC = () => {
   const { activeCase, setActiveView } = useApp();
@@ -67,7 +68,13 @@ export const CaseDetailView: React.FC = () => {
             <div className="p-3 bg-slate-50 dark:bg-slate-800/40 rounded-xl space-y-1">
               <span className="text-[10px] text-slate-400 font-extrabold uppercase">Traveller</span>
               <div className="flex items-center space-x-2">
-                <img src={activeCase.travellerAvatar} alt={activeCase.travellerName} className="w-5 h-5 rounded-full object-cover" />
+                <SafeImage
+                  src={activeCase.travellerAvatar}
+                  alt={activeCase.travellerName}
+                  category="avatar"
+                  className="w-5 h-5 rounded-full object-cover"
+                  containerClassName="w-5 h-5 rounded-full flex-shrink-0"
+                />
                 <span className="font-bold text-slate-900 dark:text-slate-100">{activeCase.travellerName}</span>
               </div>
             </div>

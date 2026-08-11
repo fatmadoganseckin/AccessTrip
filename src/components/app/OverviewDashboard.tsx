@@ -3,6 +3,7 @@ import { Users, FolderKanban, Building2, Coins, ArrowUpRight, CheckCircle2, Mail
 import { useApp } from '../../context/AppContext';
 import { useAuth } from '../../context/AuthContext';
 import { SEEDED_CASES, SEEDED_TRAVELLERS, SEEDED_FUNDING, SEEDED_ENQUIRIES } from '../../services/mockDataSeeder';
+import { SafeImage } from '../common/SafeImage';
 
 export const OverviewDashboard: React.FC = () => {
   const { setActiveView, setActiveCase } = useApp();
@@ -164,7 +165,13 @@ export const OverviewDashboard: React.FC = () => {
                   </td>
                   <td className="py-3.5 px-3">
                     <div className="flex items-center space-x-2">
-                      <img src={c.travellerAvatar} alt={c.travellerName} className="w-6 h-6 rounded-full object-cover" />
+                      <SafeImage
+                        src={c.travellerAvatar}
+                        alt={c.travellerName}
+                        category="avatar"
+                        className="w-6 h-6 rounded-full object-cover"
+                        containerClassName="w-6 h-6 rounded-full flex-shrink-0"
+                      />
                       <span className="text-slate-900 dark:text-slate-100 font-bold">{c.travellerName}</span>
                     </div>
                   </td>

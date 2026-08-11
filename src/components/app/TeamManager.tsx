@@ -2,6 +2,7 @@ import React from 'react';
 import { UserCheck, UserPlus, ShieldCheck } from 'lucide-react';
 import { SEEDED_MEMBERS } from '../../services/mockDataSeeder';
 import { useAuth } from '../../context/AuthContext';
+import { SafeImage } from '../common/SafeImage';
 
 export const TeamManager: React.FC = () => {
   const { activeOrg } = useAuth();
@@ -31,7 +32,13 @@ export const TeamManager: React.FC = () => {
         {SEEDED_MEMBERS.map((m) => (
           <div key={m.id} className="p-5 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-4 shadow-sm">
             <div className="flex items-center space-x-3">
-              <img src={m.avatarUrl} alt={m.fullName} className="w-12 h-12 rounded-2xl object-cover border-2 border-emerald-500" />
+              <SafeImage
+                src={m.avatarUrl}
+                alt={m.fullName}
+                category="avatar"
+                className="w-12 h-12 rounded-2xl object-cover border-2 border-emerald-500"
+                containerClassName="w-12 h-12 rounded-2xl flex-shrink-0"
+              />
               <div>
                 <h3 className="font-extrabold text-slate-900 dark:text-slate-100 text-sm">{m.fullName}</h3>
                 <span className="text-xs text-slate-500 font-semibold block">{m.title}</span>

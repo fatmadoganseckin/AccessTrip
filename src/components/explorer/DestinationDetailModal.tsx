@@ -3,6 +3,7 @@ import { X, ShieldCheck, MapPin, PhoneCall, Hospital, Wind, CloudSun, Users, Che
 import { Destination } from '../../types/destination';
 import { useTrip } from '../../context/TripContext';
 import { useAccessibility } from '../../context/AccessibilityContext';
+import { SafeImage } from '../common/SafeImage';
 
 interface Props {
   destination: Destination | null;
@@ -32,22 +33,23 @@ export const DestinationDetailModal: React.FC<Props> = ({ destination, onClose }
         
         {/* Header Hero Image */}
         <div className="relative h-72 sm:h-96 rounded-2xl overflow-hidden shadow-lg">
-          <img
+          <SafeImage
             src={destination.heroImage}
             alt={`Detailed view of ${destination.name}`}
+            category="destination"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
 
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 p-2 bg-slate-900/80 hover:bg-slate-900 text-white rounded-full focus:outline-none focus:ring-4 focus:ring-brand-400 border border-white/20 transition-transform hover:scale-110"
+            className="absolute top-4 right-4 z-10 p-2 bg-slate-900/80 hover:bg-slate-900 text-white rounded-full focus:outline-none focus:ring-4 focus:ring-brand-400 border border-white/20 transition-transform hover:scale-110"
             aria-label="Close destination details"
           >
             <X className="w-6 h-6" />
           </button>
 
-          <div className="absolute bottom-6 left-6 right-6 text-white space-y-2">
+          <div className="absolute bottom-6 left-6 right-6 text-white space-y-2 z-10">
             <div className="flex items-center space-x-2">
               <span className="px-3 py-1 bg-emerald-500 text-white font-extrabold text-xs rounded-full shadow flex items-center space-x-1">
                 <ShieldCheck className="w-3.5 h-3.5" />
@@ -216,7 +218,7 @@ export const DestinationDetailModal: React.FC<Props> = ({ destination, onClose }
 
           <button
             onClick={handlePlanTrip}
-            className="px-8 py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-extrabold text-sm rounded-2xl shadow-lg flex items-center space-x-2 focus:outline-none focus:ring-4 focus:ring-brand-400 transition-all hover:scale-105"
+            className="px-8 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm rounded-2xl shadow-lg flex items-center space-x-2 focus:outline-none focus:ring-4 focus:ring-emerald-400 transition-all hover:scale-105"
           >
             <Calendar className="w-5 h-5" />
             <span>Create Step-Free Itinerary</span>

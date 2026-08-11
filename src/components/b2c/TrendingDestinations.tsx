@@ -1,6 +1,7 @@
 import React from 'react';
 import { Star, Compass, ArrowRight, Sun, Bus, ShieldCheck } from 'lucide-react';
 import { useTrip } from '../../context/TripContext';
+import { SafeImage } from '../common/SafeImage';
 
 export const TrendingDestinations: React.FC = () => {
   const { destinations, setActiveDestination, setActiveTab } = useTrip();
@@ -60,7 +61,7 @@ export const TrendingDestinations: React.FC = () => {
           </button>
         </div>
 
-        {/* Destination Cards Grid (Google Travel Style) */}
+        {/* Destination Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {extraDestinations.slice(0, 3).map((dest) => (
             <div
@@ -73,20 +74,21 @@ export const TrendingDestinations: React.FC = () => {
             >
               {/* Image & Badges */}
               <div className="relative h-56 overflow-hidden">
-                <img
+                <SafeImage
                   src={dest.heroImage}
-                  alt={dest.name}
+                  alt={`Accessible travel guide for ${dest.name}, ${dest.country}`}
+                  category="destination"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 
                 {/* Score Pill */}
-                <div className="absolute top-3 right-3 px-3 py-1 bg-emerald-600 text-white font-extrabold text-xs rounded-xl shadow-lg flex items-center space-x-1">
+                <div className="absolute top-3 right-3 px-3 py-1 bg-emerald-600 text-white font-extrabold text-xs rounded-xl shadow-lg flex items-center space-x-1 z-10">
                   <ShieldCheck className="w-3.5 h-3.5" />
                   <span>{dest.scores.overall} Accessibility Score</span>
                 </div>
 
                 {/* City & Country */}
-                <div className="absolute bottom-3 left-3 right-3 text-white drop-shadow-md">
+                <div className="absolute bottom-3 left-3 right-3 text-white drop-shadow-md z-10">
                   <h3 className="text-2xl font-black">{dest.name}, {dest.country}</h3>
                 </div>
               </div>

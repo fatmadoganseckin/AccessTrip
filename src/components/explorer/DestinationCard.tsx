@@ -3,6 +3,7 @@ import { MapPin, ShieldCheck, CheckCircle2, ArrowRight, Heart, Users, Activity }
 import { Destination } from '../../types/destination';
 import { useTrip } from '../../context/TripContext';
 import { useAccessibility } from '../../context/AccessibilityContext';
+import { SafeImage } from '../common/SafeImage';
 
 interface Props {
   destination: Destination;
@@ -22,15 +23,16 @@ export const DestinationCard: React.FC<Props> = ({ destination, onSelect }) => {
       
       {/* Top Image Container */}
       <div className="relative h-60 overflow-hidden">
-        <img
+        <SafeImage
           src={destination.heroImage}
-          alt={`View of ${destination.name}, ${destination.country}`}
+          alt={`Accessible travel guide for ${destination.name}, ${destination.country}`}
+          category="destination"
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent" />
 
         {/* Top Badges */}
-        <div className="absolute top-4 left-4 right-4 flex items-center justify-between">
+        <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-10">
           <span className="px-3 py-1 bg-emerald-500 text-white font-extrabold text-xs rounded-full shadow-md flex items-center space-x-1">
             <ShieldCheck className="w-3.5 h-3.5" />
             <span>{matchPercent}% Profile Match</span>
@@ -42,7 +44,7 @@ export const DestinationCard: React.FC<Props> = ({ destination, onSelect }) => {
         </div>
 
         {/* Bottom Headline info */}
-        <div className="absolute bottom-4 left-4 right-4 text-white space-y-1">
+        <div className="absolute bottom-4 left-4 right-4 text-white space-y-1 z-10">
           <div className="flex items-center space-x-1 text-amber-400 text-xs font-bold uppercase tracking-wider">
             <MapPin className="w-3.5 h-3.5" />
             <span>{destination.region}</span>
@@ -60,7 +62,7 @@ export const DestinationCard: React.FC<Props> = ({ destination, onSelect }) => {
 
         {/* Score Grid Chips */}
         <div className="grid grid-cols-3 gap-2 text-center text-xs font-bold">
-          <div className="p-2 bg-brand-50 dark:bg-brand-950/60 rounded-xl border border-brand-200 dark:border-brand-900 text-brand-900 dark:text-brand-200">
+          <div className="p-2 bg-emerald-50 dark:bg-emerald-950/60 rounded-xl border border-emerald-200 dark:border-emerald-900 text-emerald-900 dark:text-emerald-200">
             <span className="text-[10px] text-slate-400 block uppercase font-semibold">Overall</span>
             <span className="text-sm font-extrabold">{destination.scores.overall}/100</span>
           </div>
@@ -92,7 +94,7 @@ export const DestinationCard: React.FC<Props> = ({ destination, onSelect }) => {
         {/* Action Button */}
         <button
           onClick={() => onSelect(destination)}
-          className="w-full py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-extrabold text-xs rounded-2xl shadow-md flex items-center justify-center space-x-2 focus:outline-none focus:ring-4 focus:ring-brand-400 transition-all hover:scale-102"
+          className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs rounded-2xl shadow-md flex items-center justify-center space-x-2 focus:outline-none focus:ring-4 focus:ring-emerald-400 transition-all hover:scale-102"
         >
           <span>View Granular Specs</span>
           <ArrowRight className="w-4 h-4" />

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Star, ChevronRight } from 'lucide-react';
 import { useTrip } from '../../context/TripContext';
+import { SafeImage } from '../common/SafeImage';
 
 export const PopularDestinations: React.FC = () => {
   const { destinations, setActiveDestination, setActiveTab } = useTrip();
@@ -69,12 +70,13 @@ export const PopularDestinations: React.FC = () => {
               className="group cursor-pointer bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all duration-300 space-y-3 p-2.5"
             >
               <div className="relative h-36 rounded-xl overflow-hidden">
-                <img
+                <SafeImage
                   src={dest.heroImage}
-                  alt={dest.name}
+                  alt={`Accessible destination: ${dest.name}`}
+                  category="destination"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <span className="absolute top-2 right-2 px-2 py-0.5 bg-emerald-500 text-white font-extrabold text-[10px] rounded-md shadow">
+                <span className="absolute top-2 right-2 px-2 py-0.5 bg-emerald-500 text-white font-extrabold text-[10px] rounded-md shadow z-10">
                   {dest.scores.overall}% match
                 </span>
               </div>

@@ -3,6 +3,7 @@ import { FolderKanban, Table, LayoutGrid, Calendar, Plus, Search, Filter } from 
 import { SEEDED_CASES } from '../../services/mockDataSeeder';
 import { SupportCase, CaseStatus } from '../../types/case';
 import { useApp } from '../../context/AppContext';
+import { SafeImage } from '../common/SafeImage';
 
 export const CaseManager: React.FC = () => {
   const { setActiveView, setActiveCase } = useApp();
@@ -109,7 +110,13 @@ export const CaseManager: React.FC = () => {
                       </h4>
 
                       <div className="flex items-center space-x-2 pt-2 border-t border-slate-100 dark:border-slate-800">
-                        <img src={c.travellerAvatar} alt={c.travellerName} className="w-5 h-5 rounded-full object-cover" />
+                        <SafeImage
+                          src={c.travellerAvatar}
+                          alt={c.travellerName}
+                          category="avatar"
+                          className="w-5 h-5 rounded-full object-cover"
+                          containerClassName="w-5 h-5 rounded-full flex-shrink-0"
+                        />
                         <span className="text-xs text-slate-600 dark:text-slate-300 font-bold truncate">{c.travellerName}</span>
                       </div>
                     </div>

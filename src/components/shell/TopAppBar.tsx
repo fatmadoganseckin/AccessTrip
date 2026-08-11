@@ -4,6 +4,7 @@ import { useApp } from '../../context/AppContext';
 import { useAuth } from '../../context/AuthContext';
 import { EmergencyModal } from '../common/EmergencyModal';
 import { NotificationCenter } from '../common/NotificationCenter';
+import { SafeImage } from '../common/SafeImage';
 
 export const TopAppBar: React.FC = () => {
   const { globalSearchQuery, setGlobalSearchQuery, setActiveView } = useApp();
@@ -72,12 +73,15 @@ export const TopAppBar: React.FC = () => {
 
           {/* User Profile / Avatar */}
           {user && (
-            <img
-              src={user.avatarUrl}
-              alt={user.name}
-              className="w-7 h-7 rounded-full border border-emerald-500 object-cover cursor-pointer"
-              onClick={() => setActiveView('settings')}
-            />
+            <div onClick={() => setActiveView('settings')} className="cursor-pointer">
+              <SafeImage
+                src={user.avatarUrl}
+                alt={user.name}
+                category="avatar"
+                className="w-7 h-7 rounded-full border border-emerald-500 object-cover"
+                containerClassName="w-7 h-7 rounded-full"
+              />
+            </div>
           )}
 
         </div>

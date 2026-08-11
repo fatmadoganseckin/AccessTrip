@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { useApp, SaaSView } from '../../context/AppContext';
 import { useAuth } from '../../context/AuthContext';
+import { SafeImage } from '../common/SafeImage';
 
 export const Sidebar: React.FC = () => {
   const { activeView, setActiveView, isSidebarCollapsed, setIsSidebarCollapsed } = useApp();
@@ -158,7 +159,13 @@ export const Sidebar: React.FC = () => {
         {user && (
           <div className={`flex items-center justify-between p-2 rounded-xl bg-slate-800/40 ${isSidebarCollapsed ? 'justify-center' : ''}`}>
             <div className="flex items-center space-x-2 min-w-0">
-              <img src={user.avatarUrl} alt={user.name} className="w-7 h-7 rounded-full object-cover border border-emerald-500" />
+              <SafeImage
+                src={user.avatarUrl}
+                alt={user.name}
+                category="avatar"
+                className="w-7 h-7 rounded-full object-cover border border-emerald-500"
+                containerClassName="w-7 h-7 rounded-full flex-shrink-0"
+              />
               {!isSidebarCollapsed && (
                 <div className="min-w-0">
                   <span className="text-xs font-bold text-white truncate block">{user.name}</span>

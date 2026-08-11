@@ -1,6 +1,7 @@
 import React from 'react';
 import { ThumbsUp, ShieldCheck, Camera, CheckCircle2, Clock } from 'lucide-react';
 import { VerifiedCommunityReport } from '../../types/b2c';
+import { SafeImage } from '../common/SafeImage';
 
 export const VerifiedCommunityReports: React.FC = () => {
   const reports: VerifiedCommunityReport[] = [
@@ -73,7 +74,13 @@ export const VerifiedCommunityReports: React.FC = () => {
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <img src={rep.avatarUrl} alt={rep.verifiedBy} className="w-10 h-10 rounded-full object-cover border-2 border-emerald-500" />
+                  <SafeImage
+                    src={rep.avatarUrl}
+                    alt={rep.verifiedBy}
+                    category="avatar"
+                    className="w-10 h-10 rounded-full object-cover border-2 border-emerald-500"
+                    containerClassName="w-10 h-10 rounded-full flex-shrink-0"
+                  />
                   <div>
                     <h3 className="font-extrabold text-slate-900 dark:text-slate-100 text-sm">{rep.propertyName}</h3>
                     <span className="text-xs text-slate-500 font-semibold">{rep.locationName}</span>
@@ -88,7 +95,14 @@ export const VerifiedCommunityReports: React.FC = () => {
               {/* Photo Thumbnails */}
               <div className="flex items-center space-x-2 overflow-x-auto">
                 {rep.photos.map((photo, idx) => (
-                  <img key={idx} src={photo} alt="Field evidence" className="w-24 h-18 object-cover rounded-xl border border-slate-200 dark:border-slate-700" />
+                  <SafeImage
+                    key={idx}
+                    src={photo}
+                    alt="Field evidence"
+                    category="hotel"
+                    className="w-24 h-18 object-cover rounded-xl border border-slate-200 dark:border-slate-700"
+                    containerClassName="w-24 h-18 flex-shrink-0"
+                  />
                 ))}
               </div>
 

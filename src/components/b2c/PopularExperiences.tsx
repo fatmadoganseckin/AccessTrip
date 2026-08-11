@@ -1,6 +1,7 @@
 import React from 'react';
 import { Star, ShieldCheck, Compass } from 'lucide-react';
 import { AccessibleExperience } from '../../types/b2c';
+import { SafeImage } from '../common/SafeImage';
 
 export const PopularExperiences: React.FC = () => {
   const experiences: AccessibleExperience[] = [
@@ -9,7 +10,7 @@ export const PopularExperiences: React.FC = () => {
       title: 'Barcelona Step-Free Gothic Quarter & Tapas Trail',
       city: 'Barcelona',
       country: 'Spain',
-      heroImage: 'https://images.unsplash.com/photo-1583422409516-2895a771deda?auto=format&fit=crop&w=600&q=80',
+      heroImage: 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?auto=format&fit=crop&w=600&q=80',
       duration: '3 hours',
       pricePerPerson: 45,
       accessibilityHighlights: ['100% Flat terrain', 'Accessible restrooms verified', 'Audio guides available'],
@@ -65,9 +66,10 @@ export const PopularExperiences: React.FC = () => {
             >
               <div className="space-y-3">
                 <div className="relative h-48 overflow-hidden">
-                  <img
+                  <SafeImage
                     src={exp.heroImage}
-                    alt={exp.title}
+                    alt={`${exp.title} in ${exp.city}`}
+                    category="experience"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <span className="absolute top-3 right-3 px-2.5 py-1 bg-emerald-600 text-white font-extrabold text-[10px] rounded-xl shadow">

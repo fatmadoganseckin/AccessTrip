@@ -3,6 +3,7 @@ import { Compass, Calendar, Sparkles, Heart, Building2, Hotel, User, Globe, Menu
 import { useTrip } from '../../context/TripContext';
 import { useAuth } from '../../context/AuthContext';
 import { useApp } from '../../context/AppContext';
+import { SafeImage } from '../common/SafeImage';
 
 interface Props {
   onOpenProfile: () => void;
@@ -95,12 +96,15 @@ export const ConsumerHeader: React.FC<Props> = ({ onOpenProfile }) => {
 
           {/* User Sign In / Profile */}
           {user ? (
-            <img
-              src={user.avatarUrl}
-              alt={user.name}
-              className="w-8 h-8 rounded-full border-2 border-emerald-500 object-cover cursor-pointer"
-              onClick={openAuthModal}
-            />
+            <div onClick={openAuthModal} className="cursor-pointer">
+              <SafeImage
+                src={user.avatarUrl}
+                alt={user.name}
+                category="avatar"
+                className="w-8 h-8 rounded-full border-2 border-emerald-500 object-cover"
+                containerClassName="w-8 h-8 rounded-full"
+              />
+            </div>
           ) : (
             <button
               onClick={openAuthModal}

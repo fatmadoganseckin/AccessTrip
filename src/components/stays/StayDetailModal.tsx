@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, Star, Heart, Check, AlertTriangle, ShieldCheck, Calendar, Users, MapPin, Hospital, PhoneCall, Sparkles, MessageSquare } from 'lucide-react';
 import { AccessibleStay } from '../../types/stay';
 import { useAccessibility } from '../../context/AccessibilityContext';
+import { SafeImage } from '../common/SafeImage';
 
 interface Props {
   stay: AccessibleStay | null;
@@ -73,22 +74,27 @@ export const StayDetailModal: React.FC<Props> = ({ stay, onClose }) => {
         {/* Gallery Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 rounded-3xl overflow-hidden h-72 sm:h-96 shadow-lg">
           <div className="md:col-span-2 h-full overflow-hidden">
-            <img
-              src={stay.images[0]}
+            <SafeImage
+              src={stay.images?.[0]}
               alt={stay.title}
+              category="hotel"
               className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
             />
           </div>
           <div className="hidden md:flex flex-col gap-3 h-full">
-            <img
-              src={stay.images[1] || stay.images[0]}
+            <SafeImage
+              src={stay.images?.[1] || stay.images?.[0]}
               alt={`${stay.title} interior`}
+              category="hotel"
               className="w-full h-1/2 object-cover rounded-tr-2xl hover:scale-105 transition-transform duration-500"
+              containerClassName="h-1/2"
             />
-            <img
-              src={stay.images[2] || stay.images[0]}
+            <SafeImage
+              src={stay.images?.[2] || stay.images?.[0]}
               alt={`${stay.title} bathroom`}
+              category="hotel"
               className="w-full h-1/2 object-cover rounded-br-2xl hover:scale-105 transition-transform duration-500"
+              containerClassName="h-1/2"
             />
           </div>
         </div>
@@ -101,16 +107,18 @@ export const StayDetailModal: React.FC<Props> = ({ stay, onClose }) => {
             
             {/* Host Profile Info */}
             <div className="p-5 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200 dark:border-slate-700 flex items-center space-x-4">
-              <img
+              <SafeImage
                 src={stay.hostAvatar}
                 alt={stay.hostName}
-                className="w-14 h-14 rounded-2xl object-cover border-2 border-brand-500 shadow-md"
+                category="avatar"
+                className="w-14 h-14 rounded-2xl object-cover border-2 border-emerald-500 shadow-md"
+                containerClassName="w-14 h-14 rounded-2xl flex-shrink-0"
               />
               <div>
                 <h3 className="font-extrabold text-slate-900 dark:text-slate-100 text-base">
                   Hosted by {stay.hostName}
                 </h3>
-                <p className="text-xs text-brand-600 dark:text-brand-400 font-bold">
+                <p className="text-xs text-emerald-600 dark:text-emerald-400 font-bold">
                   {stay.hostBadge}
                 </p>
               </div>
@@ -236,7 +244,7 @@ export const StayDetailModal: React.FC<Props> = ({ stay, onClose }) => {
               </div>
               <div className="flex justify-between font-black text-sm text-slate-900 dark:text-slate-100 pt-2 border-t border-slate-100 dark:border-slate-800">
                 <span>Total Stay Price</span>
-                <span className="text-brand-600 dark:text-brand-400">${stay.totalPriceForStay}</span>
+                <span className="text-emerald-600 dark:text-emerald-400">${stay.totalPriceForStay}</span>
               </div>
             </div>
 

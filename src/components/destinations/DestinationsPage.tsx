@@ -4,6 +4,7 @@ import { useTrip } from '../../context/TripContext';
 import { Destination } from '../../types/destination';
 import { DestinationDetailModal } from '../explorer/DestinationDetailModal';
 import { InteractiveMapView } from '../map/InteractiveMapView';
+import { SafeImage } from '../common/SafeImage';
 
 export const DestinationsPage: React.FC = () => {
   const { destinations, setActiveDestination } = useTrip();
@@ -89,18 +90,19 @@ export const DestinationsPage: React.FC = () => {
                 
                 {/* Image */}
                 <div className="relative h-44 overflow-hidden">
-                  <img
+                  <SafeImage
                     src={dest.heroImage}
-                    alt={dest.name}
+                    alt={`Accessible destination: ${dest.name}, ${dest.country}`}
+                    category="destination"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
 
-                  <div className="absolute top-2.5 right-2.5 px-2.5 py-0.5 bg-emerald-600 text-white font-bold text-[10px] rounded shadow flex items-center space-x-1">
+                  <div className="absolute top-2.5 right-2.5 px-2.5 py-0.5 bg-emerald-600 text-white font-bold text-[10px] rounded shadow flex items-center space-x-1 z-10">
                     <ShieldCheck className="w-3 h-3" />
                     <span>{dest.scores.overall} Score</span>
                   </div>
 
-                  <div className="absolute bottom-2.5 left-2.5 text-white drop-shadow-md">
+                  <div className="absolute bottom-2.5 left-2.5 text-white drop-shadow-md z-10">
                     <h3 className="text-lg font-bold">{dest.name}, {dest.country}</h3>
                   </div>
                 </div>

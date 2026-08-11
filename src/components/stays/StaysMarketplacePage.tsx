@@ -14,6 +14,7 @@ import { NormalizedAccommodation } from '../../types/provider';
 import { StayDetailModal } from './StayDetailModal';
 import { MOCK_STAYS } from '../../data/mockStays';
 import { useAccessibility } from '../../context/AccessibilityContext';
+import { SafeImage } from '../common/SafeImage';
 
 export const StaysMarketplacePage: React.FC = () => {
   const { profile } = useAccessibility();
@@ -172,21 +173,22 @@ export const StaysMarketplacePage: React.FC = () => {
                       
                       {/* Image */}
                       <div className="relative h-40 overflow-hidden">
-                        <img
+                        <SafeImage
                           src={acc.heroImage}
-                          alt={acc.name}
+                          alt={`Accessible accommodation: ${acc.name}`}
+                          category="hotel"
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
 
                         {/* Provider Badge */}
-                        <span className="absolute top-2 left-2 px-2 py-0.5 bg-slate-900/90 text-white font-bold text-[9px] rounded uppercase">
+                        <span className="absolute top-2 left-2 px-2 py-0.5 bg-slate-900/90 text-white font-bold text-[9px] rounded uppercase z-10">
                           {acc.provider.replace('_', ' ')}
                         </span>
 
                         {/* Wishlist */}
                         <button
                           onClick={(e) => toggleWishlist(acc.id, e)}
-                          className={`absolute top-2 right-2 p-1.5 rounded-full transition-all ${
+                          className={`absolute top-2 right-2 p-1.5 rounded-full transition-all z-10 ${
                             isWishlisted ? 'bg-white text-red-500' : 'bg-slate-900/40 text-white hover:bg-white hover:text-red-500'
                           }`}
                         >
@@ -194,7 +196,7 @@ export const StaysMarketplacePage: React.FC = () => {
                         </button>
 
                         {/* Match % */}
-                        <div className="absolute bottom-2 right-2 px-2 py-0.5 bg-emerald-600 text-white font-bold text-[10px] rounded">
+                        <div className="absolute bottom-2 right-2 px-2 py-0.5 bg-emerald-600 text-white font-bold text-[10px] rounded z-10">
                           {acc.verification.confidencePercent}% Match
                         </div>
                       </div>
@@ -265,7 +267,13 @@ export const StaysMarketplacePage: React.FC = () => {
                   onClick={() => setSelectedAccommodation(acc)}
                   className="p-3 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center space-x-3 cursor-pointer hover:border-emerald-500 transition-all"
                 >
-                  <img src={acc.heroImage} alt={acc.name} className="w-24 h-20 rounded-xl object-cover" />
+                  <SafeImage
+                    src={acc.heroImage}
+                    alt={acc.name}
+                    category="hotel"
+                    className="w-24 h-20 rounded-xl object-cover"
+                    containerClassName="w-24 h-20 flex-shrink-0 rounded-xl"
+                  />
                   <div className="flex-1 space-y-1">
                     <div className="flex items-center justify-between">
                       <h3 className="font-bold text-xs text-slate-900 dark:text-slate-100">{acc.name}</h3>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Users, Plus, ShieldCheck, CheckCircle2, AlertCircle, Heart, Phone, Mail, FileText } from 'lucide-react';
 import { SEEDED_TRAVELLERS } from '../../services/mockDataSeeder';
 import { Traveller } from '../../types/traveller';
+import { SafeImage } from '../common/SafeImage';
 
 export const TravellersManager: React.FC = () => {
   const [selectedTraveller, setSelectedTraveller] = useState<Traveller>(SEEDED_TRAVELLERS[0]);
@@ -46,7 +47,13 @@ export const TravellersManager: React.FC = () => {
               }`}
             >
               <div className="flex items-center space-x-3">
-                <img src={t.avatarUrl} alt={t.fullName} className="w-12 h-12 rounded-2xl object-cover border-2 border-emerald-500" />
+                <SafeImage
+                  src={t.avatarUrl}
+                  alt={t.fullName}
+                  category="avatar"
+                  className="w-12 h-12 rounded-2xl object-cover border-2 border-emerald-500"
+                  containerClassName="w-12 h-12 rounded-2xl flex-shrink-0"
+                />
                 <div className="space-y-1 flex-1">
                   <div className="flex items-center justify-between">
                     <h3 className="font-extrabold text-slate-900 dark:text-slate-100 text-sm">
@@ -70,7 +77,13 @@ export const TravellersManager: React.FC = () => {
           
           <div className="flex items-start justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
             <div className="flex items-center space-x-4">
-              <img src={selectedTraveller.avatarUrl} alt={selectedTraveller.fullName} className="w-16 h-16 rounded-3xl object-cover border-2 border-emerald-500" />
+              <SafeImage
+                src={selectedTraveller.avatarUrl}
+                alt={selectedTraveller.fullName}
+                category="avatar"
+                className="w-16 h-16 rounded-3xl object-cover border-2 border-emerald-500"
+                containerClassName="w-16 h-16 rounded-3xl flex-shrink-0"
+              />
               <div>
                 <h2 className="text-xl font-black text-slate-900 dark:text-slate-100">
                   {selectedTraveller.fullName} ({selectedTraveller.preferredName})

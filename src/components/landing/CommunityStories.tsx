@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTrip } from '../../context/TripContext';
+import { SafeImage } from '../common/SafeImage';
 
 export const CommunityStories: React.FC = () => {
   const { setActiveTab } = useTrip();
@@ -71,10 +72,12 @@ export const CommunityStories: React.FC = () => {
             >
               <div className="space-y-3">
                 <div className="flex items-center space-x-3">
-                  <img
+                  <SafeImage
                     src={s.avatar}
                     alt={s.name}
+                    category="avatar"
                     className="w-11 h-11 rounded-2xl object-cover border-2 border-emerald-500"
+                    containerClassName="w-11 h-11 rounded-2xl flex-shrink-0"
                   />
                   <div>
                     <h3 className="font-extrabold text-slate-900 dark:text-slate-100 text-sm">

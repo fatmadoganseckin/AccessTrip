@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Heart, Star, ShieldCheck, Check } from 'lucide-react';
 import { AccessibleStay } from '../../types/stay';
+import { SafeImage } from '../common/SafeImage';
 
 interface Props {
   stay: AccessibleStay;
@@ -17,9 +18,10 @@ export const StayCard: React.FC<Props> = ({ stay, onSelect }) => {
     >
       {/* Top Image Container */}
       <div className="relative h-64 overflow-hidden rounded-t-3xl">
-        <img
-          src={stay.images[0]}
-          alt={stay.title}
+        <SafeImage
+          src={stay.images?.[0]}
+          alt={`Accessible stay: ${stay.title} in ${stay.location}`}
+          category="hotel"
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
 
