@@ -1,7 +1,6 @@
 import React from 'react';
-import { Star, ChevronRight } from 'lucide-react';
 import { useTrip } from '../../context/TripContext';
-import { SafeImage } from '../common/SafeImage';
+import { DestinationCard } from '../explorer/DestinationCard';
 
 export const PopularDestinations: React.FC = () => {
   const { destinations, setActiveDestination, setActiveTab } = useTrip();
@@ -58,42 +57,17 @@ export const PopularDestinations: React.FC = () => {
           </button>
         </div>
 
-        {/* Horizontal Cards Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-          {extraDestinations.slice(0, 5).map((dest) => (
-            <div
+        {/* 4 Column Desktop Destination Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {extraDestinations.slice(0, 4).map((dest) => (
+            <DestinationCard
               key={dest.id}
-              onClick={() => {
-                setActiveDestination(dest);
+              destination={dest}
+              onSelect={(d) => {
+                setActiveDestination(d);
                 setActiveTab('explorer');
               }}
-              className="group cursor-pointer bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all duration-300 space-y-3 p-2.5"
-            >
-              <div className="relative h-36 rounded-xl overflow-hidden">
-                <SafeImage
-                  src={dest.heroImage}
-                  alt={`Accessible destination: ${dest.name}`}
-                  category="destination"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <span className="absolute top-2 right-2 px-2 py-0.5 bg-emerald-500 text-white font-extrabold text-[10px] rounded-md shadow z-10">
-                  {dest.scores.overall}% match
-                </span>
-              </div>
-
-              <div className="px-1 space-y-1">
-                <div className="flex items-center justify-between font-bold text-xs text-slate-900 dark:text-slate-100">
-                  <span className="truncate">{dest.name}, {dest.country}</span>
-                  <span className="flex items-center text-[10px] text-slate-500 flex-shrink-0">
-                    <Star className="w-3 h-3 fill-amber-400 text-amber-400 mr-0.5" />
-                    {dest.safetyRating}
-                  </span>
-                </div>
-                <p className="text-[11px] text-slate-500 line-clamp-2 leading-tight">
-                  {dest.tagline}
-                </p>
-              </div>
-            </div>
+            />
           ))}
         </div>
 

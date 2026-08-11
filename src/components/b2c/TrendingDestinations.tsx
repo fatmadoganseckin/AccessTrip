@@ -1,7 +1,6 @@
 import React from 'react';
-import { Star, Compass, ArrowRight, Sun, Bus, ShieldCheck } from 'lucide-react';
 import { useTrip } from '../../context/TripContext';
-import { SafeImage } from '../common/SafeImage';
+import { DestinationCard } from '../explorer/DestinationCard';
 
 export const TrendingDestinations: React.FC = () => {
   const { destinations, setActiveDestination, setActiveTab } = useTrip();
@@ -61,66 +60,17 @@ export const TrendingDestinations: React.FC = () => {
           </button>
         </div>
 
-        {/* Destination Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {extraDestinations.slice(0, 3).map((dest) => (
-            <div
+        {/* Destination Cards Grid (WCAG 2.2 AA compliant, 4 columns on desktop) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {extraDestinations.slice(0, 4).map((dest) => (
+            <DestinationCard
               key={dest.id}
-              onClick={() => {
-                setActiveDestination(dest);
+              destination={dest}
+              onSelect={(d) => {
+                setActiveDestination(d);
                 setActiveTab('explorer');
               }}
-              className="group cursor-pointer bg-white dark:bg-slate-900 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-2xl transition-all duration-300 flex flex-col justify-between"
-            >
-              {/* Image & Badges */}
-              <div className="relative h-56 overflow-hidden">
-                <SafeImage
-                  src={dest.heroImage}
-                  alt={`Accessible travel guide for ${dest.name}, ${dest.country}`}
-                  category="destination"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                
-                {/* Score Pill */}
-                <div className="absolute top-3 right-3 px-3 py-1 bg-emerald-600 text-white font-extrabold text-xs rounded-xl shadow-lg flex items-center space-x-1 z-10">
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>{dest.scores.overall} Accessibility Score</span>
-                </div>
-
-                {/* City & Country */}
-                <div className="absolute bottom-3 left-3 right-3 text-white drop-shadow-md z-10">
-                  <h3 className="text-2xl font-black">{dest.name}, {dest.country}</h3>
-                </div>
-              </div>
-
-              {/* Content Body */}
-              <div className="p-5 space-y-3">
-                <p className="text-xs text-slate-600 dark:text-slate-300 font-medium line-clamp-2 leading-relaxed">
-                  {dest.description}
-                </p>
-
-                {/* Highlights Row */}
-                <div className="grid grid-cols-2 gap-2 text-[11px] font-bold text-slate-500 pt-2 border-t border-slate-100 dark:border-slate-800">
-                  <div className="flex items-center space-x-1.5">
-                    <Bus className="w-3.5 h-3.5 text-emerald-600" />
-                    <span>Excellent Public Transit</span>
-                  </div>
-                  <div className="flex items-center space-x-1.5">
-                    <Sun className="w-3.5 h-3.5 text-amber-500" />
-                    <span>{dest.weather.tempC}°C • {dest.weather.condition}</span>
-                  </div>
-                </div>
-
-                {/* Footer CTA */}
-                <div className="pt-2 flex items-center justify-between text-xs font-extrabold text-emerald-600 dark:text-emerald-400">
-                  <span>246 verified stays</span>
-                  <span className="flex items-center group-hover:translate-x-1 transition-transform">
-                    Explore <ArrowRight className="w-3.5 h-3.5 ml-1" />
-                  </span>
-                </div>
-              </div>
-
-            </div>
+            />
           ))}
         </div>
 

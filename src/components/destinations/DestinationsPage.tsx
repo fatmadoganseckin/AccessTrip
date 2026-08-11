@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { Compass, Search, ShieldCheck, Bus, Sun, ArrowRight } from 'lucide-react';
+import { Compass, Search } from 'lucide-react';
 import { useTrip } from '../../context/TripContext';
 import { Destination } from '../../types/destination';
 import { DestinationDetailModal } from '../explorer/DestinationDetailModal';
+import { DestinationCard } from '../explorer/DestinationCard';
 import { InteractiveMapView } from '../map/InteractiveMapView';
-import { SafeImage } from '../common/SafeImage';
 
 export const DestinationsPage: React.FC = () => {
-  const { destinations, setActiveDestination } = useTrip();
+  const { destinations } = useTrip();
   const [selectedDest, setSelectedDest] = useState<Destination | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -78,63 +78,14 @@ export const DestinationsPage: React.FC = () => {
           </div>
         </div>
 
-        {/* 3-4 Column Desktop Destination Grid */}
+        {/* 4 Column Desktop Destination Grid (WCAG 2.2 AA compliant, 100% text on solid background) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {filtered.map((dest) => (
-            <div
+            <DestinationCard
               key={dest.id}
-              onClick={() => setSelectedDest(dest)}
-              className="group cursor-pointer bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
-            >
-              <div className="space-y-2.5">
-                
-                {/* Image */}
-                <div className="relative h-44 overflow-hidden">
-                  <SafeImage
-                    src={dest.heroImage}
-                    alt={`Accessible destination: ${dest.name}, ${dest.country}`}
-                    category="destination"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-
-                  <div className="absolute top-2.5 right-2.5 px-2.5 py-0.5 bg-emerald-600 text-white font-bold text-[10px] rounded shadow flex items-center space-x-1 z-10">
-                    <ShieldCheck className="w-3 h-3" />
-                    <span>{dest.scores.overall} Score</span>
-                  </div>
-
-                  <div className="absolute bottom-2.5 left-2.5 text-white drop-shadow-md z-10">
-                    <h3 className="text-lg font-bold">{dest.name}, {dest.country}</h3>
-                  </div>
-                </div>
-
-                {/* Body */}
-                <div className="px-3.5 space-y-2">
-                  <p className="text-xs text-slate-600 dark:text-slate-300 font-medium line-clamp-2 leading-snug">
-                    {dest.description}
-                  </p>
-
-                  <div className="grid grid-cols-2 gap-1.5 text-[10px] font-semibold text-slate-500 pt-1.5 border-t border-slate-100 dark:border-slate-800">
-                    <div className="flex items-center space-x-1">
-                      <Bus className="w-3 h-3 text-emerald-600" />
-                      <span>{dest.scores.transportation}% Transit</span>
-                    </div>
-                    <div className="flex items-center space-x-1">
-                      <Sun className="w-3 h-3 text-amber-500" />
-                      <span>{dest.weather.tempC}°C • {dest.weather.condition}</span>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-
-              {/* Action Footer */}
-              <div className="p-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-emerald-600 dark:text-emerald-400 mt-2">
-                <span>Best: May–Sept</span>
-                <span className="flex items-center group-hover:translate-x-0.5 transition-transform">
-                  Explore <ArrowRight className="w-3 h-3 ml-1" />
-                </span>
-              </div>
-            </div>
+              destination={dest}
+              onSelect={(d) => setSelectedDest(d)}
+            />
           ))}
         </div>
 
